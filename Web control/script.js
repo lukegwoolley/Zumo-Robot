@@ -23,10 +23,10 @@ var data = 0;
 			data = request.responseText;
 			//update the index pic
 			if ( !(data.localeCompare("0")) ){
-				Buttons[pic].src = "data/img/arrow/arrow_"+pic+".PNG";
+				Buttons[pic].src = "data/img/arrow/arrow_"+pic+".png";
 			}
 			else if ( !(data.localeCompare("1")) ) {
-				Buttons[pic].src = "data/img/green/green_"+pic+".PNG";
+				Buttons[pic].src = "data/img/green/green_"+pic+".png";
 			}
 			else if ( !(data.localeCompare("fail"))) {
 				alert ("Something went wrong!" );

@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Raspberry Pi Gpio</title>
+        <title>Luke's Cool Robot</title>
     </head>
  
     <body style="background-color: black;">
@@ -22,11 +22,11 @@
 	for ($i = 0; $i < 4; $i++) {
 		//if off
 		if ($val_array[$i][0] == 0 ) {
-			echo ("<img id='button_".$i."' src='data/img/red/red_".$i.".PNG' onclick='change_pin (".$i.");'/>");
+			echo ("<img id='button_".$i."' src='data/img/arrow/arrow_".$i.".png' onclick='change_pin (".$i.");'/>");
 		}
 		//if on
 		if ($val_array[$i][0] == 1 ) {
-			echo ("<img id='button_".$i."' src='data/img/green/green_".$i.".PNG' onclick='change_pin (".$i.");'/>");
+			echo ("<img id='button_".$i."' src='data/img/green/green_".$i.".png' onclick='change_pin (".$i.");'/>");
 		}	 
 	}
 	?>
