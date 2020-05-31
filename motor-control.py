@@ -4,8 +4,6 @@
 
 #----------------------------------------
 
-from RPIO import PWM
-import RPIO
 import RPi.GPIO as GPIO
 import time
 import sys
