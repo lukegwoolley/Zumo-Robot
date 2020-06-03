@@ -11,11 +11,11 @@
 
 <body>
    <h1>Luke's Cool Robot</h1>
-   {% for mode in func %}
-   {% if func[mode].state == on %}
-      <a href="/{{mode}}/off" class="btn btn-block btn-lg btn-default" role="button">Turn off</a></div></div>
+   {% for mode in func.keys() %}
+   {% if func[mode] == "on" %}
+      <a href="/{{mode}}/off" class="btn btn-block btn-lg btn-default" role="button">Turn off {{mode}}</a></div></div>
    {% else %}
-      <a href="/{{mode}}/on" class="btn btn-block btn-lg btn-primary" role="button">Turn on</a></div></div>
+      <a href="/{{mode}}/on" class="btn btn-block btn-lg btn-primary" role="button">Turn on {{mode}}</a></div></div>
    {% endif %}
    {% endfor %}
 </body>
