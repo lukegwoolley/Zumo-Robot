@@ -109,7 +109,7 @@ def action(changeMode, action):
    changeMode = str(changeMode)
    # If the action part of the URL is "on," execute the code indented below:
    if action == "on":
-      #add if statement for the modes 
+      # add if statement for the modes 
       # Save the status message to be passed into the template:
       message = "Turned " + changeMode + " on."
    if action == "off":
