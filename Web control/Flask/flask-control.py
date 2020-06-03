@@ -24,7 +24,7 @@ Motor_2_Enable = 27
 func = {
    "GO": {'state' : "off"},
    "BACKWARDS": {'state' : "off"},
-   "RIGHT": {'state' : "off},
+   "RIGHT": {'state' : "off"},
    "LEFT": {'state' : "off"},
    "STOP": {'state' : "on"},
 }
@@ -111,9 +111,9 @@ def action(changeMode, action):
    if action == "on":
       if changeMode == "GO":
 	      GO()
-	  elif changeMode == "BACKWARDS":
-	      BACKWARDS()
-	  elif changeMode == "LEFT":
+      elif changeMode == "BACKWARDS":
+          BACKWARDS()
+      elif changeMode == "LEFT":
 	      LEFT()
       elif changeMode == "RIGHT":
           RIGHT()
@@ -130,4 +130,4 @@ def action(changeMode, action):
    return render_template('main.html', **func)
 
 if __name__ == "__main__":
-   app.run(host='0.0.0.0', port=80, debug=True)
+   app.run(host='0.0.0.0', port=5000, debug=True)
