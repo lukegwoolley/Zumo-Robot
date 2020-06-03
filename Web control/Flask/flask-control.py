@@ -22,11 +22,11 @@ Motor_2_Enable = 27
 
 #create a dictionary for the pins  
 func = {
-   GO: {'state' : "off"},
-   BACKWARDS: {'state' : "off"},
-   RIGHT: {'state' : "off},
-   LEFT: {'state' : "off"},
-   STOP: {'state' : "on"},
+   "GO": {'state' : "off"},
+   "BACKWARDS": {'state' : "off"},
+   "RIGHT": {'state' : "off},
+   "LEFT": {'state' : "off"},
+   "STOP": {'state' : "on"},
 }
 
 #------------- Initialisation --------------
@@ -109,7 +109,16 @@ def action(changeMode, action):
    changeMode = str(changeMode)
    # If the action part of the URL is "on," execute the code indented below:
    if action == "on":
-      # add if statement for the modes 
+      if changeMode == "GO":
+	      GO()
+	  elif changeMode == "BACKWARDS":
+	      BACKWARDS()
+	  elif changeMode == "LEFT":
+	      LEFT()
+      elif changeMode == "RIGHT":
+          RIGHT()
+      elif changeMode == "STOP":
+          STOP()	  
       # Save the status message to be passed into the template:
       message = "Turned " + changeMode + " on."
    if action == "off":
@@ -118,7 +127,7 @@ def action(changeMode, action):
    # Along with the pin dictionary, put the message into the template data dictionary:
    func[changeMode]['state'] = action
 
-   return render_template('main.html', **templateData)
+   return render_template('main.html', **func)
 
 if __name__ == "__main__":
    app.run(host='0.0.0.0', port=80, debug=True)
