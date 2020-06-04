@@ -124,16 +124,16 @@ while 1:
     distance = distance / 2
 
     i+=1
-    if i > 4:
+    if i > 2:
         i = 0
         #print(f"Distance : {dis}")
-        dis2 = reject_outliers(dis, 1)
+        dis2 = np.min(dis) #the ultrasonic sensor only registers too high not really too low so this might be quicker
         #print(f"Distance cleaned: {dis2}")
-        avgdis = int(np.mean(dis2))
-        print(f"Avg: {avgdis}")
-        if avgdis > 40:
+        #avgdis = int(np.mean(dis2))
+        print(f"Dis: {dis2}")
+        if dis2 > 40:
             BACKWARDS() 
-        elif avgdis < 20:
+        elif dis2 < 20:
             GO()
         else: 
             STOP()
