@@ -114,9 +114,9 @@ def action(changeMode, action):
       elif changeMode == "BACKWARDS":
           BACKWARDS()
       elif changeMode == "LEFT":
-	      LEFT()
+	      LEFT_Cont()
       elif changeMode == "RIGHT":
-          RIGHT()
+          RIGHT_Cont()
       elif changeMode == "STOP":
           STOP()	  
       # Save the status message to be passed into the template:
