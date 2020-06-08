@@ -17,7 +17,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
 i = 0
-dis = np.zeros(5)
+dis = np.zeros(3)
 
 #------------- PORTS --------------------
 Motor_1_Forward = 25
@@ -132,7 +132,9 @@ while 1:
         #avgdis = int(np.mean(dis2))
         print(f"Dis: {dis2}")
         if dis2 > 40:
-            BACKWARDS() 
+            BACKWARDS()
+        elif dis2 == 0:
+            print(dis) 
         elif dis2 < 20:
             GO()
         else: 
