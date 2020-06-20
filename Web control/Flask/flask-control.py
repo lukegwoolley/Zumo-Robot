@@ -100,7 +100,7 @@ print("Running")
 def main():
 
    # Pass the template data into the template main.html and return it to the user
-   return render_template('main.html', func=func)
+   return render_template('main_press.html', func=func)
 
 # The function below is executed when someone requests a URL with the mode and action in it:
 @app.route("/<changeMode>/<action>")
@@ -128,7 +128,7 @@ def action(changeMode, action):
    # Along with the pin dictionary, put the message into the template data dictionary:
    func[changeMode] = action
 
-   return render_template('main.html', func=func)
+   return render_template('main_press.html', func=func)
 
 if __name__ == "__main__":
    app.run(host='0.0.0.0', port=5000, debug=True)

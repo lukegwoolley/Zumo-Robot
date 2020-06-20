@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<!--base code from kirupa.com-->
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+#LEFT {
+	width: 0;
+	height: 0;
+	border-top: 25px solid transparent;
+	border-right: 50px solid #555;
+	border-bottom: 25px solid transparent;
+    float: left;
+}
+#BACKWARDS {
+	width: 0;
+	height: 0;
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	border-top: 50px solid #555;
+    float: left;
+}
+#GO {
+	width: 0;
+	height: 0;
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	border-bottom: 50px solid #555;
+    float: left;
+}
+#RIGHT {
+	width: 0;
+	height: 0;
+	border-top: 25px solid transparent;
+	border-left: 50px solid #555;
+	border-bottom: 25px solid transparent;
+    float: left;
+}
+#LEFT:hover {
+      background-color: #CCC;
+      cursor: pointer;
+    }
+#BACKWARDS:hover {
+      background-color: #CCC;
+      cursor: pointer;
+    }
+#GO:hover {
+      background-color: #CCC;
+      cursor: pointer;
+    }
+#RIGHT:hover {
+      background-color: #CCC;
+      cursor: pointer;
+    }
+    
+</style>
+</head>
+<body>
+
+<h2>Luke's Robot Controls</h2>
+<div id = "LEFT"></div> 
+<div id = "BACKWARDS"></div> 
+<div id = "GO"></div> 
+<div id = "RIGHT"></div>
+
+<script>
+
+let go = document.querySelector("#GO");
+let backwards = document.querySelector("#BACKWARDS");
+let left = document.querySelector("#RIGHT");
+let right = document.querySelector("#LEFT");
+
+let timerID;
+let counter = 0;
+
+let pressHoldEvent = new CustomEvent("pressHold");
+
+go.addEventListener("mousedown", GpressingDown, false);
+go.addEventListener("mouseup", GnotPressingDown, false);
+go.addEventListener("mouseleave", GnotPressingDown, false);
+go.addEventListener("touchstart", GpressingDown, false);
+go.addEventListener("touchend", GnotPressingDown, false);
+go.addEventListener("pressHold", GdoSomething, false);
+
+backwards.addEventListener("mousedown", BpressingDown, false);
+backwards.addEventListener("mouseup", BnotPressingDown, false);
+backwards.addEventListener("mouseleave", BnotPressingDown, false);
+backwards.addEventListener("touchstart", BpressingDown, false);
+backwards.addEventListener("touchend", BnotPressingDown, false);
+backwards.addEventListener("pressHold", BdoSomething, false);
+
+left.addEventListener("mousedown", LpressingDown, false);
+left.addEventListener("mouseup", LnotPressingDown, false);
+left.addEventListener("mouseleave", LnotPressingDown, false);
+left.addEventListener("touchstart", LpressingDown, false);
+left.addEventListener("touchend", LnotPressingDown, false);
+left.addEventListener("pressHold", LdoSomething, false);
+
+right.addEventListener("mousedown", RpressingDown, false);
+right.addEventListener("mouseup", RnotPressingDown, false);
+right.addEventListener("mouseleave", RnotPressingDown, false);
+right.addEventListener("touchstart", RpressingDown, false);
+right.addEventListener("touchend", RnotPressingDown, false);
+right.addEventListener("pressHold", RdoSomething, false);
+
+function Gtimer() {
+        if (counter == 0) {
+            go.dispatchEvent(pressHoldEvent);
+        }
+        console.log("Timer tick for go!");
+        timerID = requestAnimationFrame(Gtimer);
+        counter++;
+    }
+    
+function GpressingDown(e) {
+// Start the timer
+      requestAnimationFrame(Gtimer);
+
+      e.preventDefault();
+
+      console.log("Pressing!");
+    }
+
+function GnotPressingDown(e) {
+      // Stop the timer
+      cancelAnimationFrame(timerID);
+      counter = 0;
+      location.href = "/GO/off"
+      console.log("Not pressing!");
+    }
+
+function GdoSomething(e) {
+    location.href = "/GO/on"
+    console.log("pressHold event fired!");
+    }
+
+function Btimer() {
+        if (counter == 0) {
+            backwards.dispatchEvent(pressHoldEvent);
+        }
+        console.log("Timer tick for backwards!");
+        timerID = requestAnimationFrame(Btimer);
+        counter++;
+    }
+    
+function BpressingDown(e) {
+// Start the timer
+      requestAnimationFrame(Btimer);
+
+      e.preventDefault();
+
+      console.log("Pressing!");
+    }
+
+function BnotPressingDown(e) {
+      // Stop the timer
+      cancelAnimationFrame(timerID);
+      counter = 0;
+      location.href = "/BACKWARDS/off"
+      console.log("Not pressing!");
+    }
+
+function BdoSomething(e) {
+    location.href = "/BACKWARDS/on"
+      console.log("pressHold event fired!");
+    }
+    
+function Ltimer() {
+        if (counter == 0) {
+            left.dispatchEvent(pressHoldEvent);
+        }
+        console.log("Timer tick for left!");
+        timerID = requestAnimationFrame(Ltimer);
+        counter++;
+    }
+    
+function LpressingDown(e) {
+// Start the timer
+      requestAnimationFrame(Ltimer);
+
+      e.preventDefault();
+
+      console.log("Pressing!");
+    }
+
+function LnotPressingDown(e) {
+      // Stop the timer
+      cancelAnimationFrame(timerID);
+      counter = 0;
+      location.href = "/LEFT/off"
+      console.log("Not pressing!");
+    }
+
+function LdoSomething(e) {
+    location.href = "/LEFT/on"
+      console.log("pressHold event fired!");
+    }
+
+function Rtimer() {
+        if (counter == 0) {
+            right.dispatchEvent(pressHoldEvent);
+        }
+        console.log("Timer tick for right!");
+        timerID = requestAnimationFrame(Rtimer);
+        counter++;
+    }
+    
+function RpressingDown(e) {
+// Start the timer
+      requestAnimationFrame(Rtimer);
+
+      e.preventDefault();
+
+      console.log("Pressing!");
+    }
+
+function RnotPressingDown(e) {
+      // Stop the timer
+      cancelAnimationFrame(timerID);
+      counter = 0;
+      location.href = "/RIGHT/off"
+      console.log("Not pressing!");
+    }
+
+function RdoSomething(e) {
+    location.href = "/RIGHT/on"
+      console.log("pressHold event fired!");
+    }
+  </script>
+
+</body>
+</html> 
