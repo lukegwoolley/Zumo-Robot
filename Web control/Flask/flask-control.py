@@ -2,16 +2,27 @@
 #                CREDIT
 # motor code adapted from https://www.fred-j.org/?p=366
 
-# flask Adapted excerpt from Getting Started with Raspberry Pi by Matt Richardson Modified by Rui Santos Complete project details: https://randomnerdtutorials.com
+# flask Adapted excerpt from Getting Started with Raspberry Pi by Matt Richardson, Modified by Rui Santos Complete project details: https://randomnerdtutorials.com
 
+# threading from following tutorial: https://realpython.com/intro-to-python-threading/
 #----------------------------------------
 
 import RPi.GPIO as GPIO
 import time
 import sys
-from flask import Flask, render_template, request
+import logging
+import threading
+import concurrent.futures
+import numpy as np
+from tasks import threaded_task 
+from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
- 
+
+#defines
+i = 0
+dis = np.zeros(3)
+dis2 = 100 
+  
 #------------- PORTS --------------------
 Motor_1_Forward = 25
 Motor_1_Reverse = 24
@@ -19,8 +30,10 @@ Motor_2_Forward = 23
 Motor_2_Reverse = 18
 Motor_1_Enable = 17
 Motor_2_Enable = 27
+TRIG = 20
+ECHO = 21
 
-#create a dictionary for the pins  
+#create a dictionary for the commands  
 func = {
    "GO" : "off",
    "BACKWARDS" : "off",
@@ -41,6 +54,8 @@ GPIO.setup(Motor_1_Enable, GPIO.OUT)
 GPIO.setup(Motor_2_Enable, GPIO.OUT)
 GPIO.output(Motor_1_Enable, GPIO.HIGH)
 GPIO.output(Motor_2_Enable, GPIO.HIGH)
+GPIO.setup(TRIG, GPIO.OUT)
+GPIO.setup(ECHO, GPIO.IN)
   
  
 #--------------------------------------------
@@ -68,7 +83,7 @@ def RIGHT() :
 def RIGHT_Cont() :
     print("Turning right continuously")
     GPIO.output(Motor_1_Forward, GPIO.HIGH)
-    GPIO.output(Motor_2_Reverse, GPIO.HIGH)
+    GPIO.output(Motor_2_Reverse, GPIO.LOW)
     GPIO.setup(Motor_1_Reverse, GPIO.LOW)
     GPIO.setup(Motor_2_Forward, GPIO.LOW)
  
@@ -81,7 +96,7 @@ def LEFT() :
  
 def LEFT_Cont() :
     print("Turning left continuously")
-    GPIO.output(Motor_1_Reverse, GPIO.HIGH)
+    GPIO.output(Motor_1_Reverse, GPIO.LOW)
     GPIO.output(Motor_2_Forward, GPIO.HIGH)
     GPIO.setup(Motor_2_Reverse, GPIO.LOW)
     GPIO.setup(Motor_1_Forward, GPIO.LOW)
@@ -92,6 +107,43 @@ def STOP() :
     GPIO.output(Motor_2_Forward, GPIO.LOW)
     GPIO.output(Motor_1_Reverse, GPIO.LOW)
     GPIO.output(Motor_2_Reverse, GPIO.LOW)
+
+def read_sensor() :
+    # Set trigger to False (Low)
+    GPIO.output(TRIG, False)
+
+    # Allow module to settle
+    time.sleep(0.5)
+
+    # Send 10us pulse to trigger
+    GPIO.output(TRIG, True)
+    time.sleep(0.00001)
+    GPIO.output(TRIG, False)
+    start = time.time()
+
+    while GPIO.input(ECHO)==0:
+        start = time.time()
+
+    while GPIO.input(ECHO)==1:
+        stop = time.time()
+
+    # Calculate pulse length
+    elapsed = stop-start
+
+    # Distance pulse travelled in that time is time
+    # multiplied by the speed of sound (cm/s)
+    distance = elapsed * 34300
+
+    # That was the distance there and back so halve the value
+    distance = distance / 2
+
+    i+=1
+    if i > 2:
+        i = 0
+        global dis2 = np.min(dis) #the ultrasonic sensor only registers too high not really too low so this might be quicker
+        print(f"Dis: {dis2}")
+    dis[i] = distance
+    
 
 print("Running")
  
