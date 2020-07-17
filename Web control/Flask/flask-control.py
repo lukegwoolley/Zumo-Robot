@@ -109,6 +109,8 @@ def STOP() :
     GPIO.output(Motor_2_Reverse, GPIO.LOW)
 
 def read_sensor() :
+
+    global dis2
     # Set trigger to False (Low)
     GPIO.output(TRIG, False)
 
@@ -140,7 +142,7 @@ def read_sensor() :
     i+=1
     if i > 2:
         i = 0
-        global dis2 = np.min(dis) #the ultrasonic sensor only registers too high not really too low so this might be quicker
+        dis2 = np.min(dis) #the ultrasonic sensor only registers too high not really too low so this might be quicker
         print(f"Dis: {dis2}")
     dis[i] = distance
     
@@ -151,36 +153,46 @@ print("Running")
 @app.route("/")
 def main():
 
-   # Pass the template data into the template main.html and return it to the user
-   return render_template('main_press.html', func=func)
+    print("Start thread")
+    thread = Thread(target=read_sensor,)
+    thread.daemon = True
+    thread.start()
+    print("Thread started")
+    # Pass the template data into the template main.html and return it to the user
+    return render_template('main_press.html', func=func)
 
 # The function below is executed when someone requests a URL with the mode and action in it:
 @app.route("/<changeMode>/<action>")
 def action(changeMode, action):
-   # Convert the mode from the URL into a string:
-   changeMode = str(changeMode)
-   # If the action part of the URL is "on," execute the code indented below:
-   if action == "on":
-      if changeMode == "GO":
-	      GO()
-      elif changeMode == "BACKWARDS":
-          BACKWARDS()
-      elif changeMode == "LEFT":
-	      LEFT_Cont()
-      elif changeMode == "RIGHT":
-          RIGHT_Cont()
-      elif changeMode == "STOP":
-          STOP()	  
-      # Save the status message to be passed into the template:
-      message = "Turned " + changeMode + " on."
-      print(message)
-   if action == "off":
-      STOP()
+    # Convert the mode from the URL into a string:
+    changeMode = str(changeMode)
+    # If the action part of the URL is "on," execute the code indented below:
+    if 10 < dis2 < 20:
+       STOP()
+    elif dis2 < 10:
+       GO()
+    else:
+        if action == "on":
+            if changeMode == "GO":
+                GO()
+            elif changeMode == "BACKWARDS":
+                BACKWARDS()
+            elif changeMode == "LEFT":
+                LEFT_Cont()
+            elif changeMode == "RIGHT":
+                RIGHT_Cont()
+            elif changeMode == "STOP":
+                STOP()	  
+            # Save the status message to be passed into the template:
+            message = "Turned " + changeMode + " on."
+            print(message)
+        if action == "off":
+            STOP()
 
    # Along with the pin dictionary, put the message into the template data dictionary:
-   func[changeMode] = action
+    func[changeMode] = action
 
-   return render_template('main_press.html', func=func)
+    return render_template('main_press.html', func=func)
 
 if __name__ == "__main__":
    app.run(host='0.0.0.0', debug=True)
