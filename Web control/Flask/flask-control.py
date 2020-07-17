@@ -21,7 +21,7 @@ dis = np.zeros(3)
 dis2 = 100 
 WALL = False
 GOF = False
-lock = RLock()
+lock = threading.RLock()
   
 #------------- PORTS --------------------
 Motor_1_Forward = 25
@@ -183,7 +183,7 @@ def action(changeMode, action):
     if action == "on":
         if changeMode == "GO":
             if WALL:
-                STOP()
+                action = "off"
             else:
                 GO()
         elif changeMode == "BACKWARDS":
@@ -195,7 +195,7 @@ def action(changeMode, action):
         elif changeMode == "STOP":
             STOP()	  
         # Save the status message to be passed into the template:
-        message = "Turned " + changeMode + " on."
+        message = "Turned " + changeMode + " " + action + "."
         print(message)
     if action == "off":
         STOP()
