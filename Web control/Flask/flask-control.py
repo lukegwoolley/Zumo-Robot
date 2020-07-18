@@ -60,21 +60,21 @@ GPIO.setup(ECHO, GPIO.IN)
  
 #--------------------------------------------
 def GO() :
-    global GOF
     print("Moving forwards")
     GPIO.output(Motor_1_Forward, GPIO.HIGH)
     GPIO.output(Motor_2_Forward, GPIO.HIGH)
     GPIO.setup(Motor_1_Reverse, GPIO.LOW)
     GPIO.setup(Motor_2_Reverse, GPIO.LOW)
-    with lock:
-        GOF = True
  
 def BACKWARDS() :
+    global GOF
     print("Moving backwards")
     GPIO.setup(Motor_1_Forward, GPIO.LOW)
     GPIO.setup(Motor_2_Forward, GPIO.LOW)
     GPIO.output(Motor_1_Reverse, GPIO.HIGH)
     GPIO.output(Motor_2_Reverse, GPIO.HIGH)
+    with lock:
+        GOF = True
  
 def RIGHT() :
     print("Turning right")
@@ -157,7 +157,7 @@ def read_sensor() :
         if i > 2:
             i = 0
             dis2 = np.min(dis) #the ultrasonic sensor only registers too high not really too low so this might be quicker
-            if dis2 < 10:
+            if dis2 < 20:
                 WALL = True
                 if GOF:
                     STOP()
@@ -182,12 +182,12 @@ def action(changeMode, action):
 
     if action == "on":
         if changeMode == "GO":
+            GO()
+        elif changeMode == "BACKWARDS":
             if WALL:
                 action = "off"
             else:
-                GO()
-        elif changeMode == "BACKWARDS":
-            BACKWARDS()
+                BACKWARDS()
         elif changeMode == "LEFT":
             LEFT_Cont()
         elif changeMode == "RIGHT":
